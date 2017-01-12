@@ -1,0 +1,7 @@
+/home/jacque/Projects/F-sharp/ElevatedWorlds/ElevatedWorlds/obj/x86/Debug/.NETFramework,Version=v4.5.1.AssemblyAttribute.fs
+/home/jacque/Projects/F-sharp/ElevatedWorlds/ElevatedWorlds/bin/Debug/ElevatedWorlds.exe.mdb
+/home/jacque/Projects/F-sharp/ElevatedWorlds/ElevatedWorlds/bin/Debug/ElevatedWorlds.exe
+/home/jacque/Projects/F-sharp/ElevatedWorlds/ElevatedWorlds/obj/x86/Debug/ElevatedWorlds.exe
+/home/jacque/Projects/F-sharp/ElevatedWorlds/ElevatedWorlds/obj/x86/Debug/ElevatedWorlds.exe.mdb
+/home/jacque/Projects/F-sharp/ElevatedWorlds/ElevatedWorlds/bin/Debug/FParsec.dll
+/home/jacque/Projects/F-sharp/ElevatedWorlds/ElevatedWorlds/bin/Debug/FParsecCS.dll
