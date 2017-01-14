@@ -45,7 +45,7 @@ let routing = parse {
 type TxnTimeStamp =
     | TxnTimeStamp of DateTime
 
-let txnTimeStamp = dateTime TxnTimeStamp
+let txnTimeStamp = field dateTime TxnTimeStamp
 
 //GS-06: Group Control Number
 type GrctrlNo =
@@ -68,17 +68,15 @@ let vRIIcode = field' (skipString "004010") (constant DraftStds)
 type GS =
     | GS of FuncIdCode * Routing * TxnTimeStamp * GrctrlNo * RsagyCode * VRIIcode
 
-let pGS =
-    skipString "GS" >>. fsep >>. funcIdCode
-    >>= fun fid ->
-        routing
-        >>= fun rtg ->
-            txnTimeStamp
-            >>= fun ts ->
-                grctlNo
-                >>= fun gcn ->
-                    rsagyCode
-                    >>= fun ragy ->
-                        vRIIcode
-                        >>= fun vrii ->
-                            preturn (GS(fid, rtg, ts, gcn, ragy, vrii))
+let pGS = parse {
+    let! fid = funcIdCode
+    let! rtg = routing
+    let! ts = txnTimeStamp
+    let! gcn = grctlNo
+    let! ragy = rsagyCode
+    let! vrii = vRIIcode
+
+    return GS(fid, rtg, ts, gcn, ragy, vrii)
+    }
+
+let pGSRec = record "GS" pGS

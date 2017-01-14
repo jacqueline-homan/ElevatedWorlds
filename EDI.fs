@@ -21,7 +21,7 @@ type EDI =
 
 let pEDI : Parser<EDI,_> = parse {
     let! a = pISARec
-    let! b = pGS
+    let! b = pGSRec
     let! c = pST
     let! d = pB2
     let! e = pB2A
