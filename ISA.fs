@@ -97,7 +97,7 @@ let interchgRcvId = field (anyString 15) InterchgRecvrID
 //ISA-09/ISA-10: Interchange Date/Time
 type InterchgDateTime = InterchgDateTime of DateTime
 
-let interchgDateTime = dateTime InterchgDateTime
+let interchgDateTime = field dateTime InterchgDateTime
 
 //ISA-11: Interchange Control Standards Identifier
 type InterchgCtrlStds = InterchgCtrlStds of string
@@ -120,9 +120,11 @@ type AckReq = AckReq of string
 let ackReq = field (anyString 1) AckReq
 
 //ISA-15: Usage Indicator
-type UsageInd = UsageInd of string
+type UsageInd = 
+    | UsageProd
+    | UsageTest
 
-let usageInd = field (anyString 1) UsageInd
+let usageInd = field ((attempt (skipChar 'P' >>% UsageProd)) <|> (attempt (skipChar 'T' >>% UsageTest))) id
 
 type ISA =
     | ISA of Auth * Sec * InterchangeID * InterchgSndrID * InterchgIdQual * InterchgRecvrID * InterchgDateTime * InterchgCtrlStds * InterchgCtrlVerNo * InterchgCtrlNo * AckReq * UsageInd
@@ -140,6 +142,8 @@ let pISA = parse {
     let! j = interchgCtrlNo
     let! k = ackReq
     let! l = usageInd
+
+    let! _ = elsep
 
     return ISA(a, b, c, d, e, f, g, h, i, j, k, l)
     }

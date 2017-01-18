@@ -38,7 +38,7 @@ let field (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = field' p c .>> fsep
 // tuple. This tuple is passed to the rc constructor. Then a record
 // separator is parsed and thrown out.
 let record (cd : string) fs =
-    skipString cd >>. fs .>> rsep
+    skipString cd >>. fsep >>. fs .>> rsep
 
 // Return a value regardless of the parameter.
 let constant (v : 'v) : (_ -> 'v) = fun _ -> v
@@ -58,10 +58,10 @@ let date : Parser<DateTime> =
     (attempt (tryDate "yyyyMMdd")) <|> (attempt (tryDate "yyMMdd"))
     <?> "Date"
 let time : Parser<DateTime> =
-    (attempt (tryDate "HHmm")) <|> (attempt (tryDate "HHmmss")) <?> "Time"
+    (attempt (tryDate "HHmmss")) <|> (attempt (tryDate "HHmm")) <?> "Time"
 
 // Parse a pair of fields containing a date and time into a value.
-let dateTime (c : DateTime -> 'p) : Parser<'p> =
+let dateTime : Parser<DateTime> =
     date
     >>= fun d ->
-        time >>= fun t -> preturn (d.Add(t.TimeOfDay) |> c) <?> "DateTime"
+        fsep >>. time >>= fun t -> preturn (d.Add(t.TimeOfDay)) <?> "DateTime"
