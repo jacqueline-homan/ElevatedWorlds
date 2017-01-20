@@ -23,4 +23,4 @@ let pST = parse {
     let! tc = tctrlNo 
     return ST(id, tc)}
 
-let pSTrecord = record "ST" pST 
+let pSTRec = record "ST" pST 
