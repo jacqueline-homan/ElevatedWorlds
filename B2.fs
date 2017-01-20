@@ -10,17 +10,16 @@ open System.IO
 type StdCarAlphaCode = 
     | StdCarAlphaCode of string
 
-let pStdCarAlphaCode : Parser<Option<StdCarAlphaCode>> = 
-    opt ((manyMinMaxSatisfy 2 4 isAsciiLetter |>> StdCarAlphaCode)) 
-    .>> oFSep
+let pStdCarAlphaCode : Parser<StdCarAlphaCode option> = 
+    optfield (manyMinMaxSatisfy 2 4 isAsciiLetter) StdCarAlphaCode
+
 
 type ShipIdNo = 
     | ShipIdNo of string
 
 let pShipIdNo : Parser<Option<ShipIdNo>> = 
-    opt 
-        (manyMinMaxSatisfy 1 30 (fun c -> isDigit c || isAsciiLetter c) 
-         |>> ShipIdNo) .>> oFSep
+    optfield 
+        (manyMinMaxSatisfy 1 30 (fun c -> isDigit c || isAsciiLetter c)) ShipIdNo 
 
 type ShipPmt = 
     | Collect 
@@ -28,14 +27,20 @@ type ShipPmt =
     | ThirdPartyPay
 
 let pShipPmt : Parser<ShipPmt> = 
-    (skipString "PP" >>? preturn Prepaid) 
-    <|> (skipString "CC" >>? preturn Collect) 
-    <|> (skipString "TP" >>? preturn ThirdPartyPay)
+    field' (skipString "PP") (constant Prepaid) 
+    <|> field' (skipString "CC") (constant Collect) 
+    <|> field' (skipString "TP") (constant ThirdPartyPay)
 
 type B2 = 
-    | B2 of Option<StdCarAlphaCode> * Option<ShipIdNo> * ShipPmt
+    | B2 of StdCarAlphaCode option * ShipIdNo option * ShipPmt
 
 // B2**BLNJ**BLNJ75035079T**PP~
-let pB2 : Parser<B2> = 
-    skipString "B2" >>. oFSep 
-    >>. tuple3 pStdCarAlphaCode pShipIdNo pShipPmt |>> B2 .>> rsep
+let pB2 = parse {
+    let! alpha = pStdCarAlphaCode
+    let! idNo = pShipIdNo
+    let! ship = pShipPmt
+
+    return (B2(alpha, idNo, ship))
+}
+
+let pB2Rec = record "B2" pB2
