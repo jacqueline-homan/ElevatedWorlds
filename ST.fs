@@ -9,18 +9,18 @@ open ElevatedWorlds.Structures
 type TsID =
     | MotorCarrierLoadTender
 
-let tsId : Parser<TsID> = skipString "204" >>. preturn MotorCarrierLoadTender .>> fsep
+let tsId : Parser<TsID> = field (skipString "204") (constant MotorCarrierLoadTender) 
 
 type TctrlNo =
     | TctrlNo of string
 
-let tctrlNo : Parser<TctrlNo> = manyMinMaxSatisfy 4 9 (fun c -> isDigit c ) |>> TctrlNo .>> rsep
+let tctrlNo : Parser<TctrlNo> = field' (manyMinMaxSatisfy 4 9 isDigit) TctrlNo
 
 type ST = ST of TsID * TctrlNo
 
-let pST =
-    skipString "ST" >>. fsep >>. tsId
-    >>= fun id ->
-        tctrlNo
-        >>= fun ctrl ->
-            preturn (ST(id, ctrl))
+let pST = parse {
+    let! id = tsId
+    let! tc = tctrlNo 
+    return ST(id, tc)}
+
+let pSTrecord = record "ST" pST 
