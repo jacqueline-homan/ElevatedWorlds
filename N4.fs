@@ -65,4 +65,5 @@ let pN4 =
                     >>= fun e ->
                         preturn (N4(a,b,c,d,e))
 
-let N4record = skipString "N4" .>> fsep >>. pN4 .>> rsep
+let N4record = skipString "N4" >>. fsep >>. pN4 .>> rsep
+
