@@ -9,7 +9,7 @@ open ElevatedWorlds.Structures
 type City =
     | City of string
 
-let pCity : Parser<City option> = 
+let pCity : Parser<City option> =
     optfield (pstring 2 30) City
 
 type State =
@@ -22,7 +22,7 @@ type Zipcode =
     | Zipcode of string
 
 let pZip : Parser<Zipcode option> =
-    optfield 
+    optfield
         (manyMinMaxSatisfy 3 15 (isNoneOf "*~.,':;' '")) Zipcode
 
 type Country =

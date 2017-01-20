@@ -30,14 +30,14 @@ let rcvr : Parser<AprecvrCode> = field routeCode AprecvrCode
 
 //Handling the relationship set between Sender and Receiver
 type Routing =
-    { apsdndrCode : ApsndrCode
+    { apsdrCode : ApsndrCode
       aprecvrCode : AprecvrCode }
 
 let routing = parse {
     let! s = sdr
     let! r = rcvr
 
-    return { apsdndrCode = s
+    return { apsdrCode = s
              aprecvrCode = r }
     }
 
