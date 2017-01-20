@@ -9,60 +9,38 @@ open ElevatedWorlds.Structures
 type City =
     | City of string
 
-let pCity : Parser<City option> =
-    (opt
-        (manyMinMaxSatisfy 2 30 (isNoneOf "*~") |>> City)) .>> fsep
+let pCity : Parser<City option> = 
+    optfield (pstring 2 30) City
 
 type State =
     | State of string
 
 let pState : Parser<State option> =
-    (opt
-        (anyString 2 |>> State)) .>> fsep
+    optfield (pstring 2 2) State
 
 type Zipcode =
     | Zipcode of string
 
 let pZip : Parser<Zipcode option> =
-    (opt
-        (manyMinMaxSatisfy 3 15 (isNoneOf"*~.,':;' '") |>> Zipcode)) .>> fsep
+    optfield 
+        (manyMinMaxSatisfy 3 15 (isNoneOf "*~.,':;' '")) Zipcode
 
 type Country =
     | Country of string
 
 let pCountry : Parser<Country option> =
-    (opt
-        (manyMinMaxSatisfy 2 3 isAsciiLetter |>> Country)) //.>> fsep
-
-
-
-type Location =
-    { city : City option
-      state : State option
-      zip : Zipcode option
-      country : Country option}
-
-let loc =
-    pipe4 pCity pState pZip pCountry (fun m s z c ->
-        {city = m
-         state = s
-         zip = z
-         country = c})
+    optfield' (pAsciiAlpha 2 3) Country
 
 type N4 =
-    | N4 of Location * City option * State option * Zipcode option * Country option //City * State * Zipcode * Country
+    | N4 of City option * State option * Zipcode option * Country option
 
-let pN4 =
-    loc
-    >>= fun a ->
-        pCity
-        >>= fun b ->
-            pState
-            >>= fun c ->
-                pZip
-                >>= fun d ->
-                    pCountry
-                    >>= fun e ->
-                        preturn (N4(a,b,c,d,e))
+let pN4 = parse {
+    let! c = pCity
+    let! s = pState
+    let! z = pZip
+    let! o = pCountry
 
-let N4record = skipString "N4" .>> fsep >>. pN4 .>> rsep
+    return (N4(c, s, z, o))
+}
+
+let pN4Rec = record "N4" pN4

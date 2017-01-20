@@ -28,7 +28,7 @@ let pEDI : Parser<EDI,_> = parse {
     let! f = pNTE
     let! g = pN1
     let! h = pN3
-    let! i = pN4
+    let! i = pN4Rec
     let! j = pS5
     let! k = many pL11
     return (EDI(a, b, c, d, e, f, g, h, i, j, k))

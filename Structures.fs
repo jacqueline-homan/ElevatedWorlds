@@ -19,6 +19,12 @@ let rsep : Parser<_> = skipChar '~' <?> "Record Separator"
 let asep =
     (attempt fsep) <|> (attempt rsep) <?> "Field or Record Separator"
 
+// Parses an arbitrary string not containging separaters.
+let pstring (m : int) (x : int): Parser<string> = manyMinMaxSatisfy m x (isNoneOf "*~")
+
+// Parse ASCII letters
+let pAsciiAlpha (m : int) (x : int) : Parser<string> = manyMinMaxSatisfy m x isAsciiLetter
+
 //ISA-16: Component Element Separator. Since this is not a data structure, we only need a function.
 let elsep : Parser<_> = skipChar ':' <?> "Semicolon"
 let psep : Parser<_> = skipChar '.' <?> "Dot"
@@ -31,8 +37,14 @@ let invInf = System.Globalization.DateTimeFormatInfo.InvariantInfo
 // the value inside the Parser to another value.
 let field' (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = p |>> c
 
+let optfield' (p : Parser<_>) (c :_ -> 'v) : Parser<'v option> = 
+    attempt (opt (field' p c))
+
 // Parse a field using field' and skip the separator after it.
 let field (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = field' p c .>> fsep
+
+let optfield (p : Parser<_>) (c : _ -> 'v) : Parser<'v option> = 
+    optfield' p c .>> fsep
 
 // Parse a record. fs should be a series of field parsers yielding a
 // tuple. This tuple is passed to the rc constructor. Then a record
