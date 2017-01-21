@@ -120,7 +120,7 @@ type AckReq = AckReq of string
 let ackReq : Parser<AckReq> = field (anyString 1) AckReq
 
 //ISA-15: Usage Indicator
-type UsageInd = 
+type UsageInd =
     | UsageProd
     | UsageTest
 
@@ -143,9 +143,9 @@ let pISA = parse {
     let! k = ackReq
     let! l = usageInd
 
-    let! _ = elsep
+    let! _ = fsep >>. elsep
 
     return ISA(a, b, c, d, e, f, g, h, i, j, k, l)
     }
 
-let pISARec = record "ISA" pISA 
+let pISARec = record "ISA" pISA

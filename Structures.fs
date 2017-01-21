@@ -35,22 +35,18 @@ let invInf = System.Globalization.DateTimeFormatInfo.InvariantInfo
 
 // Parse a field without a separator, returning a value, then convert
 // the value inside the Parser to another value.
-let field' (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = p |>> c
+let field (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = fsep >>. (p |>> c)
 
-let optfield' (p : Parser<_>) (c :_ -> 'v) : Parser<'v option> = 
-    attempt (opt (field' p c))
-
-// Parse a field using field' and skip the separator after it.
-let field (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = field' p c .>> fsep
-
-let optfield (p : Parser<_>) (c : _ -> 'v) : Parser<'v option> = 
-    optfield' p c .>> fsep
+//  let choiceField (p : Parser<_>)
+// Parse an optional field.
+let optfield (p : Parser<_>) (c :_ -> 'v) : Parser<'v option> =
+    attempt (opt (field p c))
 
 // Parse a record. fs should be a series of field parsers yielding a
 // tuple. This tuple is passed to the rc constructor. Then a record
 // separator is parsed and thrown out.
 let record (cd : string) fs =
-    skipString cd >>. fsep >>. fs .>> rsep
+    skipString cd >>. fs .>> rsep
 
 // Return a value regardless of the parameter.
 let constant (v : 'v) : (_ -> 'v) = fun _ -> v
