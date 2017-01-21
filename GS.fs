@@ -63,7 +63,7 @@ let rsagyCode = field (skipString "X") (constant AccredStdsCmteX12)
 type VRIIcode =
     | DraftStds
 
-let vRIIcode = field' (skipString "004010") (constant DraftStds)
+let vRIIcode = field (skipString "004010") (constant DraftStds)
 
 type GS =
     | GS of FuncIdCode * Routing * TxnTimeStamp * GrctrlNo * RsagyCode * VRIIcode

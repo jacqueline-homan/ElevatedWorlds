@@ -29,7 +29,7 @@ type Country =
     | Country of string
 
 let pCountry : Parser<Country option> =
-    optfield' (pAsciiAlpha 2 3) Country
+    optfield (pAsciiAlpha 2 3) Country
 
 type N4 =
     | N4 of City option * State option * Zipcode option * Country option

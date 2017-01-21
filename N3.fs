@@ -5,39 +5,40 @@ open System.IO
 open FParsec
 open ElevatedWorlds.Structures
 
-type AddressInfo =
-    | AddressInfo of string
+type Address1 =
+    Address1 of string
 
-let pAddy : Parser<AddressInfo> = 
-    field (manyMinMaxSatisfy 1 55 (isNoneOf "*~")) AddressInfo 
+let pAddr1 : Parser<Address1> =
+    field (pstring 1 55) Address1
 
-type Details =
-    | Details of string
+type Address2 =
+    | Address2 of string
 
-let pDet : Parser<Details option> =
+let pAddr2 : Parser<Address2 option> =
     optfield
-        (manyMinMaxSatisfy 1 55 (isNoneOf "*~")) Details 
+        (pstring 1 55) Address2
 
-type OptionalAddressInfo =
-    { address : AddressInfo
-      optDetails : Details option}
+type AddressInfo = {
+    address1 : Address1;
+      address2 : Address2 Option
+    }
 
-let opAdInf = parse {
-    let! a = pAddy
-    let! d = pDet
+let pAddressInfo = parse {
+    let! a1 = pAddr1
+    let! a2 = pAddr2
 
     return {
-        address = a
-        optDetails = d
+        address1 = a1
+        address2 = a2
     }
 }
 
 type N3 =
-    | N3 of OptionalAddressInfo
+    | N3 of AddressInfo
 
 let pN3 = parse {
-    let! opAd = opAdInf 
-    return N3(opAd)}
+    let! ai = pAddressInfo
+    return N3(ai)
+    }
 
 let pN3Rec = record "N3" pN3
-
