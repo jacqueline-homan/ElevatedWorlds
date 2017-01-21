@@ -42,7 +42,7 @@ let pB2 = parse {
     let! idNo = fsep >>. pShipIdNo
     printfn "idNo: %A" idNo
     let! ship = fsep >>. pShipPmt
-
+    printfn "ship: %A" ship
     return (B2(alpha, idNo, ship))
 }
 
