@@ -8,32 +8,36 @@ open ElevatedWorlds.Structures
 type AddressInfo =
     | AddressInfo of string
 
-let pAddy : Parser<AddressInfo> = manyMinMaxSatisfy 1 55 (isNoneOf "*~") |>> AddressInfo //.>> fsep
+let pAddy : Parser<AddressInfo> = 
+    field (manyMinMaxSatisfy 1 55 (isNoneOf "*~")) AddressInfo 
 
 type Details =
     | Details of string
 
 let pDet : Parser<Details option> =
-    (opt
-        (manyMinMaxSatisfy 1 55 (isNoneOf "*~") |>> Details)) .>> rsep
+    optfield
+        (manyMinMaxSatisfy 1 55 (isNoneOf "*~")) Details 
 
 type OptionalAddressInfo =
     { address : AddressInfo
       optDetails : Details option}
 
-let pOptAdInf =
-    pipe2 pAddy pDet (fun a d ->
-        { address = a
-          optDetails = d})
+let opAdInf = parse {
+    let! a = pAddy
+    let! d = pDet
+
+    return {
+        address = a
+        optDetails = d
+    }
+}
 
 type N3 =
     | N3 of OptionalAddressInfo
 
-let pN3Record =
-    pOptAdInf
-    >>= fun x ->
-        preturn (N3(x))
+let pN3 = parse {
+    let! opAd = opAdInf
+    return N3(opAd)}
 
+let pN3Rec = record "N3" pN3
 
-let pN3 : Parser<N3> =
-    skipString "N3" >>. fsep >>. pN3Record

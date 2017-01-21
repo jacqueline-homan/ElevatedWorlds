@@ -42,4 +42,4 @@ let pN1 = parse {
     let! ic = idCode
     return N1(e, n, iq, ic)}
 
-let pN1Rec = record "N1" pN1
+let pN1Rec = record "N1" pN1 <?> "N1"
