@@ -82,17 +82,17 @@ let interchgID : Parser<InterchangeID> = field (anyString 2) InterchangeID
 // ISA-06: The Interchange Sender ID
 type InterchgSndrID = InterchgSndrID of string
 
-let interchgSndrId = field (anyString 15) InterchgSndrID
+let interchgSndrId : Parser<InterchgSndrID> = field (anyString 15) InterchgSndrID
 
 // ISA-07 is exactly the same as ISA-05 in the MG-EDI pdf manual
 type InterchgIdQual = InterchgIdQual of string
 
-let interchgIdQual = field (anyString 2) InterchgIdQual
+let interchgIdQual : Parser<InterchgIdQual> = field (anyString 2) InterchgIdQual
 
 //ISA-08: The Interchange Receiver ID
 type InterchgRecvrID = InterchgRecvrID of string
 
-let interchgRcvId = field (anyString 15) InterchgRecvrID
+let interchgRcvId : Parser<InterchgRecvrID> = field (anyString 15) InterchgRecvrID
 
 //ISA-09/ISA-10: Interchange Date/Time
 type InterchgDateTime = InterchgDateTime of DateTime
@@ -107,24 +107,24 @@ let interchgCtrlStds<'T, 'u> = field (anyString 1) InterchgCtrlStds
 //ISA-12: Interchange Control Version Number
 type InterchgCtrlVerNo = InterchgCtrlVerNo of string
 
-let interchgCtrlVerNo = field (anyString 5) InterchgCtrlVerNo
+let interchgCtrlVerNo : Parser<InterchgCtrlVerNo> = field (anyString 5) InterchgCtrlVerNo
 
 //ISA-13: Interchange Control Number
 type InterchgCtrlNo = InterchgCtrlNo of string
 
-let interchgCtrlNo = field (anyString 9) InterchgCtrlNo
+let interchgCtrlNo : Parser<InterchgCtrlNo> = field (anyString 9) InterchgCtrlNo
 
 //ISA-14: Acknowledgement Requested
 type AckReq = AckReq of string
 
-let ackReq = field (anyString 1) AckReq
+let ackReq : Parser<AckReq> = field (anyString 1) AckReq
 
 //ISA-15: Usage Indicator
 type UsageInd = 
     | UsageProd
     | UsageTest
 
-let usageInd = field ((attempt (skipChar 'P' >>% UsageProd)) <|> (attempt (skipChar 'T' >>% UsageTest))) id
+let usageInd : Parser<UsageInd> = field ((attempt (skipChar 'P' >>% UsageProd)) <|> (attempt (skipChar 'T' >>% UsageTest))) id
 
 type ISA =
     | ISA of Auth * Sec * InterchangeID * InterchgSndrID * InterchgIdQual * InterchgRecvrID * InterchgDateTime * InterchgCtrlStds * InterchgCtrlVerNo * InterchgCtrlNo * AckReq * UsageInd
