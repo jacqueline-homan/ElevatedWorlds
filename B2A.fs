@@ -28,6 +28,7 @@ type B2A = B2A of SetPurpCode * AppType option
 let pB2A = parse {
     let! p = fsep >>. pSetPurpCode
     let! a = fsep >>. pAppType
+    let! _ = asep
 
     return B2A(p, a)
 }
