@@ -13,17 +13,23 @@ type SetPurpCode =
     | Change
 
 let pSetPurpCode : Parser<SetPurpCode> =
-    ((skipString "00" >>? preturn Original)
-     <|> (skipString "01" >>? preturn Cancellation)
-     <|> (skipString "04" >>? preturn Change)) .>> fsep
+    (field' (skipString "00") (constant Original)
+     <|> field' (skipString "01") (constant Cancellation)
+     <|> field' (skipString "04") (constant Change)) 
 
 type AppType =
     | LoadTender
 
 let pAppType : Parser<AppType option> =
-    opt (skipString "LT" >>. preturn LoadTender)
+    optfield (skipString "LT") (constant LoadTender)
 
-type B2A = B2A of SetPurpCode * Option<AppType>
+type B2A = B2A of SetPurpCode * AppType option
 
-let pB2A : Parser<B2A> =
-    skipString "B2A" >>. fsep >>. tuple2 pSetPurpCode pAppType |>> B2A .>> rsep
+let pB2A = parse {
+    let! p = fsep >>. pSetPurpCode
+    let! a = fsep >>. pAppType
+
+    return B2A(p, a)
+}
+
+let pB2ARec = record "B2A" pB2A

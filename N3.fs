@@ -36,7 +36,7 @@ type N3 =
     | N3 of OptionalAddressInfo
 
 let pN3 = parse {
-    let! opAd = opAdInf
+    let! opAd = opAdInf 
     return N3(opAd)}
 
 let pN3Rec = record "N3" pN3

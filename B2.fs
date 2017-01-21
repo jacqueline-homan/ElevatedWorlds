@@ -38,11 +38,11 @@ type B2 =
 // B2**BLNJ**BLNJ75035079T**PP~
 let pB2 = parse {
     let! alpha = fsep >>. pStdCarAlphaCode
-    printfn "alpha: %A" alpha
+    //printfn "alpha: %A" alpha
     let! idNo = fsep >>. pShipIdNo
-    printfn "idNo: %A" idNo
+    //printfn "idNo: %A" idNo
     let! ship = fsep >>. pShipPmt
-    printfn "ship: %A" ship
+    //printfn "ship: %A" ship
     return (B2(alpha, idNo, ship))
 }
 
