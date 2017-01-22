@@ -22,7 +22,7 @@ type NTE =
     | NTE of RefCode option * NTEDescription
 
 let pNTE = parse {
-    let! r = fsep >>. pRefCode
+    let! r = oFSep >>. pRefCode
     let! d = fsep >>. pDescription
     return NTE(r,d)}
 
