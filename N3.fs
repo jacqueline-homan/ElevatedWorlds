@@ -19,8 +19,8 @@ let pAddr2 : Parser<Address2 option> =
         (pstring 1 55) Address2
 
 type AddressInfo = {
-    address1 : Address1;
-      address2 : Address2 Option
+    address1 : Address1
+    address2 : Address2 Option
     }
 
 let pAddressInfo = parse {

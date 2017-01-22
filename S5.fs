@@ -9,7 +9,8 @@ open ElevatedWorlds.Structures
 type StopSeqNo = 
     | StopSeqNo of uint16
 
-let pStopSeqNo : Parser<StopSeqNo> = manyMinMaxSatisfy 1 3 isDigit |>> (fun c -> UInt16.Parse(c) |> StopSeqNo) .>> fsep
+let pStopSeqNo : Parser<StopSeqNo> = 
+    field (manyMinMaxSatisfy 1 3 isDigit |>> uint16) StopSeqNo 
 
 type StopReason =
     | Complete
@@ -18,18 +19,18 @@ type StopReason =
     | PartUnload 
 
 let pStopReason : Parser<StopReason> = 
-    ((skipString "CL" >>? preturn Complete)
-      <|> (skipString "CU" >>? preturn CompleteUnload)
-      <|> (skipString "PL" >>? preturn PartLoad) 
-      <|> (skipString "PU" >>? preturn PartUnload)) .>> rsep
+    (field (skipString "CL") (constant Complete)
+      <|> field (skipString "CU") (constant CompleteUnload)
+      <|> field (skipString "PL") (constant PartLoad) 
+      <|> field (skipString "PU") (constant PartUnload)
+    ) <?> "StopReason"
 
 type S5 =
     | S5 of StopSeqNo * StopReason
 
-let pS5 : Parser<S5> =
-    skipString "S5" .>> fsep >>. pStopSeqNo
-    >>= fun x -> 
-        pStopReason
-        >>= fun y ->
-            preturn (S5(x, y))
+let pS5 = parse {
+    let! stsq = pStopSeqNo
+    let! stre = pStopReason
+    return S5(stsq, stre)}
          
+let pS5Rec = record "S5" pS5

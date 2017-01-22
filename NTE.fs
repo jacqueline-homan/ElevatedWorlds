@@ -10,7 +10,8 @@ type RefCode =
     | RefCode of uint16
 
 let pRefCode : Parser<RefCode option> =
-    optfield ((manyMinMaxSatisfy 3 3 isDigit) |>> uint16) RefCode 
+//converting the result of manyMinMaxSatisfy which is a string, into uint16 
+    optfield (manyMinMaxSatisfy 3 3 isDigit |>> uint16) RefCode 
 
 type NTEDescription =
     | NTEDescription of string
@@ -21,6 +22,7 @@ let pDescription : Parser<NTEDescription> =
 type NTE =
     | NTE of RefCode option * NTEDescription
 
+//stuck again bc this one is being a rat fucker...
 let pNTE = parse {
     let! r = oFSep >>. pRefCode
     let! d = fsep >>. pDescription
@@ -28,6 +30,4 @@ let pNTE = parse {
 
 let pNTERec = record "NTE" pNTE
     
-        //: Parser<NTE> =
-    //skipString "NTE" >>. fsep >>. tuple2 pRefCode pDescription |>> NTE
-    //.>> rsep
+        
