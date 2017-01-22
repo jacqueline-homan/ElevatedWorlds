@@ -30,11 +30,6 @@ let idCode : Parser<IdCode> =
 type N1 =
     | N1 of Entity * Name * IdQual * IdCode
 
-(*
-let n1 : Parser<N1> =
-    skipString "N1" >>. fsep >>. tuple4 (let entity .>> fsep) ( name .>> fsep) (let idQual .>> fsep) (let idCode .>> rsep)|>> N1
-*)
-//because I did not want a nasty tuple4 monster staring me down, I refactored
 let pN1 = parse {
     let! e = entity
     let! n = name

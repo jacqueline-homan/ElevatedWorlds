@@ -32,7 +32,7 @@ let pB2A = parse {
     let! pc = pSetPurpCode
     let! at = pAppType
 
-    return ({pcode = pc; atype = at;})
+    return ({pcode = pc; atype = at})
     }
 
 let pB2ARec : Parser<B2A> = record "B2A" pB2A
