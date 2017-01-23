@@ -9,9 +9,6 @@ type Parser<'t> = Parser<'t, unit>
 // The field separator
 let fsep : Parser<_> = skipChar '*' <?> "Field Separator"
 
-// Optional fields are separated by two '*'
-let oFSep : Parser<_> = skipString "**" <?> "Double Field Separator"
-
 // The record delimiter
 let rsep : Parser<_> = skipChar '~' <?> "Record Separator"
 
@@ -33,14 +30,17 @@ let nbr l = manyMinMaxSatisfy l l isDigit <?> "Number"
 // DateTime parsing
 let invInf = System.Globalization.DateTimeFormatInfo.InvariantInfo
 
+// Just parse the field without the preceding separator.
+let field' (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = (p |>> c)
+
 // Parse a field without a separator, returning a value, then convert
 // the value inside the Parser to another value.
-let field (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = fsep >>. (p |>> c)
+let field (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = fsep >>. field' p c
 
 //  let choiceField (p : Parser<_>)
 // Parse an optional field.
 let optfield (p : Parser<_>) (c :_ -> 'v) : Parser<'v option> =
-    attempt (opt (field p c))
+    fsep >>. (opt (field' p c))
 
 // Parse a record. fs should be a series of field parsers yielding a
 // tuple. This tuple is passed to the rc constructor. Then a record
