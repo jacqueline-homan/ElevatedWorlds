@@ -42,6 +42,11 @@ let field (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = fsep >>. field' p c
 let optfield (p : Parser<_>) (c :_ -> 'v) : Parser<'v option> =
     fsep >>. (opt (field' p c))
 
+// parse an optional field with an optional preceding separator. This
+// is for record-terminal fields.
+let optfield' (p : Parser<_>) (c :_ -> 'v) : Parser<'v option> =
+    (opt (fsep >>. field' p c))
+
 // Parse a record. fs should be a series of field parsers yielding a
 // tuple. This tuple is passed to the rc constructor. Then a record
 // separator is parsed and thrown out.

@@ -15,7 +15,7 @@ type Address2 =
     | Address2 of string
 
 let pAddr2 : Parser<Address2 option> =
-    optfield
+    optfield'
         (pstring 1 55) Address2
 
 type AddressInfo = {
