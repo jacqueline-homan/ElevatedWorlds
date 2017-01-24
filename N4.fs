@@ -10,20 +10,20 @@ type City =
     | City of string
 
 let pCity : Parser<City option> =
-    optfield (pstring 2 30) City
+    optfield (pValue 2 30) City
 
 type State =
     | State of string
 
 let pState : Parser<State option> =
-    optfield (pstring 2 2) State
+    optfield (pValue 2 2) State
 
 type Zipcode =
     | Zipcode of string
 
 let pZip : Parser<Zipcode option> =
     optfield
-        (manyMinMaxSatisfy 3 15 (isNoneOf "*~.,':;' '")) Zipcode
+        (pValue 3 15) Zipcode
 
 type Country =
     | Country of string

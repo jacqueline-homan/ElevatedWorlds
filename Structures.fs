@@ -17,7 +17,7 @@ let asep =
     (attempt fsep) <|> (attempt rsep) <?> "Field or Record Separator"
 
 // Parses an arbitrary string not containging separaters.
-let pstring (m : int) (x : int): Parser<string> = manyMinMaxSatisfy m x (isNoneOf "*~")
+let pValue (m : int) (x : int): Parser<string> = manyMinMaxSatisfy m x (isNoneOf "*~")
 
 // Parse ASCII letters
 let pAsciiAlpha (m : int) (x : int) : Parser<string> = manyMinMaxSatisfy m x isAsciiLetter
