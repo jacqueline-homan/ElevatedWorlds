@@ -36,7 +36,7 @@ type Description =
     | Description of string 
 
 let pDesc : Parser<Description> = 
-    field (manyMinMaxSatisfy 1 80 (isNoneOf "*~**:***")) Description 
+    field' (manyMinMaxSatisfy 1 80 (isNoneOf "*~**:***")) Description 
        
 type L11 =
     | L11 of BusInstruct * Description
