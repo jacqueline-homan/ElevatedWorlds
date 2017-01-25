@@ -9,14 +9,14 @@ type Address1 =
     Address1 of string
 
 let pAddr1 : Parser<Address1> =
-    field (pstring 1 55) Address1
+    field (pValue 1 55) Address1
 
 type Address2 =
     | Address2 of string
 
 let pAddr2 : Parser<Address2 option> =
     optfield'
-        (pstring 1 55) Address2
+        (pValue 1 55) Address2
 
 type AddressInfo = {
     address1 : Address1
