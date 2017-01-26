@@ -36,7 +36,7 @@ type L11 =
     | L11R0103 of RefId * RefQual * Description option
     | L11P0102 of Description
 
-let pL11R0103 : Parser<L11> = pipe3 pRefId pRefQual pOptDesc (fun a b c -> L11R0103 (a, b, c)) <?> "L11R0103"
+let pL11R0103 : Parser<L11> = pipe3 pRefId pRefQual pOptDesc (fun a b c -> L11R0103 (a, b, c)) <?> "L11"
 let pL11P0102 : Parser<L11> = pDesc |>> (fun d -> L11P0102 d) <?> "L11P0102"
 
 let pL11 : Parser<L11> = (attempt pL11R0103) <|> (attempt pL11P0102)

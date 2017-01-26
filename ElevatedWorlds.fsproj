@@ -64,6 +64,7 @@
     <Compile Include="B2A.fs" />
     <Compile Include="S5.fs" />
     <Compile Include="L11.fs" />
+    <Compile Include="G62.fs" />
     <Compile Include="IEA.fs" />
     <Compile Include="Loops.fs" />
     <Compile Include="Segments.fs" />
