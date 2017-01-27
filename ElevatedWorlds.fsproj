@@ -62,6 +62,7 @@
     <Compile Include="S5.fs" />
     <Compile Include="L11.fs" />
     <Compile Include="G62.fs" />
+    <Compile Include="AT8.fs" />
     <Compile Include="N1.fs" />
     <Compile Include="N3.fs" />
     <Compile Include="N4.fs" />
