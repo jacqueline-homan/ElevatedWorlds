@@ -70,6 +70,10 @@ let tryDate (fmt : string) : Parser<DateTime, unit> =
 let date : Parser<DateTime> =
     (attempt (tryDate "yyyyMMdd")) <|> (attempt (tryDate "yyMMdd"))
     <?> "Date"
+
+//let date2 : Parser<Date> = anyString 8 |>> Date .>> fsep
+    //(attempt(tryDate "CCYYMMDD")) <|> (attempt(tryDate "yyyyMMDD"))
+
 let time : Parser<DateTime> =
     (attempt (tryDate "HHmmss")) <|> (attempt (tryDate "HHmm")) <?> "Time"
 
