@@ -24,14 +24,14 @@ let pdate : Parser<Date, unit> = field (anyString 8) Date
 
 //G62-03: The Time Qualifier
 type TimeQual =
-    | EarlReqDel
     | EarlReqPU
+    | EarlReqDel
     | LatReqPU
     | LatReqDel 
 
 let ptqual : Parser<TimeQual> =
-    (field (skipString "I") (constant EarlReqDel)
-    <|> field (skipString "G") (constant EarlReqPU)
+    (field (skipString "I") (constant EarlReqPU)
+    <|> field (skipString "G") (constant EarlReqDel)
     <|> field (skipString "K") (constant LatReqPU)
     <|> field (skipString "L") (constant LatReqDel)
     ) <?> "TimeQual"
