@@ -31,7 +31,7 @@ type LadingQty =
     | LadingQty of string
 
 let plqty : Parser<LadingQty option> = 
-    optfield' (manyMinMaxSatisfy 1 7 isDigit) LadingQty 
+    fsep >>. optfield' (pValue 1 7) LadingQty
 
 type AT8 = AT8 of WtQual * WtCode * Weight * LadingQty option
 
