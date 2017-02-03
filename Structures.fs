@@ -37,6 +37,10 @@ let field' (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = (p |>> c)
 // the value inside the Parser to another value.
 let field (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = fsep >>. field' p c
 
+// Try parsing a field, and reset if we fail..
+let tryField (p : Parser<_>) (c : _ -> 'v) : Parser<'v> = (attempt (field p c))
+
+
 //  let choiceField (p : Parser<_>)
 // Parse an optional field.
 let optfield (p : Parser<_>) (c :_ -> 'v) : Parser<'v option> =
