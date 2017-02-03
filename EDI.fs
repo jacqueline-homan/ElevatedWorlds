@@ -35,5 +35,5 @@ let pEDI : Parser<EDI,_> = parse {
     let! k = many pL11Rec
     let! l = many pG62Rec
     let! m = pAT8Rec
-    return (EDI(a, b, c, d, e, f, g, h, i, j, k, l, m))
+    return (EDI(a, b, c, d, e, f, g, h, i, j, k, l , m))
     }
