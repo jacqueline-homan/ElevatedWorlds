@@ -28,10 +28,10 @@ let pWtDsc : Parser<Weight> =
     field pfloat Weight 
 
 type LadingQty =
-    | LadingQty of string
+    | LadingQty of int32
 
 let plqty : Parser<LadingQty option> = 
-    optfield' (manyMinMaxSatisfy 1 7 isDigit) LadingQty 
+    fsep >>. optfield' pint32 LadingQty
 
 type AT8 = AT8 of WtQual * WtCode * Weight * LadingQty option
 
