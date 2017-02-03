@@ -12,10 +12,10 @@ type DateQual =
     | DelNotLater
 
 let pdqual : Parser<DateQual> = 
-    (field (skipString "37") (constant ShipNotBefore)
-    <|> field (skipString "38") (constant ShipNotLater)
-    <|> field (skipString "53") (constant DelNotBefore)
-    <|> field (skipString "54") (constant ShipNotLater)
+    (tryField (skipString "37") (constant ShipNotBefore)
+    <|> tryField (skipString "38") (constant ShipNotLater)
+    <|> tryField (skipString "53") (constant DelNotBefore)
+    <|> tryField (skipString "54") (constant ShipNotLater)
     ) <?> "DateQual"
 
 //G62-02: Date
@@ -30,11 +30,11 @@ type TimeQual =
     | LatReqDel 
 
 let ptqual : Parser<TimeQual> =
-    (field (skipString "I") (constant EarlReqPU)
-    <|> field (skipString "G") (constant EarlReqDel)
-    <|> field (skipString "K") (constant LatReqPU)
-    <|> field (skipString "L") (constant LatReqDel)
-    ) <?> "TimeQual"
+    (tryField (skipString "I") (constant EarlReqPU))
+    <|> (tryField (skipString "G") (constant EarlReqDel))
+    <|> (tryField (skipString "K") (constant LatReqPU))
+    <|> (tryField (skipString "L") (constant LatReqDel))
+    <?> "TimeQual"
 
 //G62-04: Time
 type Time = Time of string
