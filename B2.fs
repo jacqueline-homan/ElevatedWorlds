@@ -37,7 +37,7 @@ type B2 =
 
 // B2**BLNJ**BLNJ75035079T**PP~
 //
-// NOTE: We've got the extra fseps here because fuck EDI 204.
+// NOTE: We've got the extra fseps here because spec inconsistency.
 let pB2 = parse {
     let! alpha = fsep >>. pStdCarAlphaCode
     let! idNo = fsep >>. pShipIdNo

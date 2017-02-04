@@ -68,6 +68,7 @@
     <Compile Include="N4.fs" />
     <Compile Include="G61.fs" />
     <Compile Include="L5.fs" />
+    <Compile Include="L3.fs" />
     <Compile Include="IEA.fs" />
     <Compile Include="EDI.fs" />
     <Compile Include="Program.fs" />

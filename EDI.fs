@@ -21,7 +21,10 @@ open ElevatedWorlds.L5
 open FParsec
 
 type EDI =
-    | EDI of ISA * GS * ST * B2 * B2A * NTE * N1 * N3 * N4 * S5 * L11 list * G62 list * AT8 * N1 * N3 * N4 * G61 * L5
+    | EDI of ISA * GS * ST * B2 * B2A * NTE * N1 * N3 * N4 * S5 * L11 list *
+    G62 list * AT8 * N1 * N3 * N4 * G61 * L5 * AT8 * L5 * AT8 * S5 * L11 list *
+    G62 list * AT8 * N1 * N3 * N4 * G61 * L5 * AT8 * S5 * L11 list * G62 list *
+    AT8 * N1 * N3 * N4 * G61 * L5 *AT8
 
 let pEDI : Parser<EDI,_> = parse {
     let! a = pISARec
@@ -42,5 +45,30 @@ let pEDI : Parser<EDI,_> = parse {
     let! p = pN4Rec
     let! q = pG61Rec
     let! r = pL5Rec
-    return (EDI(a, b, c, d, e, f, g, h, i, j, k, l , m, n, o, p, q, r))
+    let! s = pAT8Rec
+    let! t = pL5Rec
+    let! u = pAT8Rec
+    let! v = pS5Rec
+    let! w = many pL11Rec
+    let! x = many pG62Rec
+    let! y = pAT8Rec
+    let! z = pN1Rec
+    let! aa = pN3Rec
+    let! bb = pN4Rec
+    let! cc = pG61Rec
+    let! dd = pL5Rec
+    let! ee = pAT8Rec
+    let! ff = pS5Rec
+    let! gg = many pL11Rec
+    let! hh = many pG62Rec
+    let! ii = pAT8Rec
+    let! jj = pN1Rec
+    let! kk = pN3Rec
+    let! ll = pN4Rec
+    let! mm = pG61Rec
+    let! nn = pL5Rec
+    let! oo = pAT8Rec
+
+    return (EDI(a, b, c, d, e, f, g, h, i, j, k, l , m, n, o, p, q, r, s, t, u, v,
+                w, x, y, z, aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk, ll, mm, nn,oo))
     }

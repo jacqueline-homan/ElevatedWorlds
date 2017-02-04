@@ -19,10 +19,10 @@ type StopReason =
     | PartUnload 
 
 let pStopReason : Parser<StopReason> = 
-    (field (skipString "CL") (constant Complete)
-      <|> field (skipString "CU") (constant CompleteUnload)
-      <|> field (skipString "PL") (constant PartLoad) 
-      <|> field (skipString "PU") (constant PartUnload)
+    (tryField (skipString "CL") (constant Complete)
+      <|> tryField (skipString "CU") (constant CompleteUnload)
+      <|> tryField (skipString "PL") (constant PartLoad) 
+      <|> tryField (skipString "PU") (constant PartUnload)
     ) <?> "StopReason"
 
 type S5 =
