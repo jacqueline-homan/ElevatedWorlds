@@ -4,7 +4,7 @@ open FParsec
 open System
 open System.IO
 open ElevatedWorlds.Structures
-
+//Loop 300
 //Weight Qualifier
 type WtQual = 
     | GrossWt 
