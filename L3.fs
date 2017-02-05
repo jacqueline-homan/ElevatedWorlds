@@ -65,14 +65,14 @@ let pchg : Parser<Charge option> =
 type LadingQty = LadingQty of int
 
 let plqty : Parser<LadingQty option> =
-    optfield' (manyMinMaxSatisfy 1 7 (isDigit) |>> int)  LadingQty
+    optfield' (manyMinMaxSatisfy 1 7 (isDigit) |>> int)  LadingQty 
 
 type L3 = L3 of WtInfo * RateInfo * Charge option * LadingQty option
 
 let pL3 = parse {
     let! wi = pinfo
     let! ri = prateInfo
-    let! ch = pchg
+    let! ch = pchg .>> weirdsep
     let! qt = plqty
     return L3(wi, ri, ch, qt)}
 

@@ -6,19 +6,24 @@ open FParsec
 open ElevatedWorlds.Structures
 
 type InclFunGrps = 
-    | InclFunGrps of string
+    | InclFunGrps of int
 
 let pFgrps : Parser<InclFunGrps> = 
-    manyMinMaxSatisfy 1 5 (isNoneOf "~") |>> InclFunGrps .>> fsep
+    field (manyMinMaxSatisfy 1 5 (isDigit) |>> int) InclFunGrps 
 
 
 type IntchgCtrlNo =
     | IntchgCtrlNo of uint16
 
 let pCtrlNo : Parser<IntchgCtrlNo> = 
-    (manyMinMaxSatisfy 9 9 isDigit |>> (fun ctl -> UInt16.Parse(ctl) |> IntchgCtrlNo)) .>> fsep
+    field (manyMinMaxSatisfy 9 9 isDigit |>> uint16) IntchgCtrlNo 
 
 type IEA = IEA of InclFunGrps * IntchgCtrlNo
 
-let pIEA =
-    skipString "IEA" >>. fsep >>. tuple2 pFgrps pCtrlNo |>> IEA .>> rsep
+let pIEA = parse {
+    let! x = pFgrps
+    let! y = pCtrlNo
+    return IEA(x, y)}
+
+let pIEARec =
+    record "IEA" pIEA

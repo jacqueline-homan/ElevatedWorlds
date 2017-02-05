@@ -1,8 +1,8 @@
 ﻿//
 //  Author:
-//       evan <>
+//       Jacqueline Homan, Codecatenation LLC <>
 //
-//  Copyright (c) 2016 evan
+//  Copyright (c) 2016 Jacqueline Homan
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by

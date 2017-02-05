@@ -16,6 +16,9 @@ let rsep : Parser<_> = skipChar '~' <?> "Record Separator"
 let asep =
     (attempt fsep) <|> (attempt rsep) <?> "Field or Record Separator"
 
+//Parser for the single irregular field sep of five stars in L3 record
+let weirdsep : Parser<_> = skipString "*****" <?> "Five-stars Field Separator"
+
 // Parses an arbitrary string not containging separaters.
 let pValue (m : int) (x : int): Parser<string> = manyMinMaxSatisfy m x (isNoneOf "*~")
 
