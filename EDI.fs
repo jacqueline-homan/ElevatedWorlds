@@ -18,13 +18,14 @@ open ElevatedWorlds.G62
 open ElevatedWorlds.AT8
 open ElevatedWorlds.G61
 open ElevatedWorlds.L5
+open ElevatedWorlds.L3
 open FParsec
 
 type EDI =
     | EDI of ISA * GS * ST * B2 * B2A * NTE * N1 * N3 * N4 * S5 * L11 list *
     G62 list * AT8 * N1 * N3 * N4 * G61 * L5 * AT8 * L5 * AT8 * S5 * L11 list *
     G62 list * AT8 * N1 * N3 * N4 * G61 * L5 * AT8 * S5 * L11 list * G62 list *
-    AT8 * N1 * N3 * N4 * G61 * L5 *AT8
+    AT8 * N1 * N3 * N4 * G61 * L5 * AT8 * L3
 
 let pEDI : Parser<EDI,_> = parse {
     let! a = pISARec
@@ -68,7 +69,8 @@ let pEDI : Parser<EDI,_> = parse {
     let! mm = pG61Rec
     let! nn = pL5Rec
     let! oo = pAT8Rec
+    let! pp = pL3Rec
 
     return (EDI(a, b, c, d, e, f, g, h, i, j, k, l , m, n, o, p, q, r, s, t, u, v,
-                w, x, y, z, aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk, ll, mm, nn,oo))
+                w, x, y, z, aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk, ll, mm, nn,oo, pp))
     }
